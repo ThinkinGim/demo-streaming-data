@@ -3,20 +3,19 @@ from aws_cdk import (
     aws_ec2 as ec2,
 )
 
-class Network(core.NestedStack):
+class Network():
 
     def __init__(self, scope: core.Construct, id: str, **kwargs) -> None:
-        super().__init__(scope, id, **kwargs)
 
-        self.vpc = ec2.Vpc(self, "scenario-vpc",
+        self.vpc = ec2.Vpc(scope, "streaming-vpc",
             cidr="10.100.0.0/16",
-            max_azs=2,
+            max_azs=1,
             nat_gateways=0,
             subnet_configuration=[
                 ec2.SubnetConfiguration(
-                    name='isolated',
+                    name="isolated",
                     subnet_type=ec2.SubnetType.ISOLATED,
-                    cidr_mask=24
+                    cidr_mask=16
                 )
             ]
         )
