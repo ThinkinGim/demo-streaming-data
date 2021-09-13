@@ -1,6 +1,6 @@
 from aws_cdk import core
 from artifact import (
-    event_store,
+    streaming_data,
     infra,
 )
 
@@ -10,4 +10,4 @@ class StreamingDataScenarioStack(core.Stack):
         super().__init__(scope, id, **kwargs)
 
         network = infra.Network(self, 'infra')
-        s3_bucket = event_store.S3(self, 'event_store')
+        s3_bucket = streaming_data.InputStore(self, 'input_store', network_vpc=network.vpc)
