@@ -10,4 +10,6 @@ class StreamingDataScenarioStack(core.Stack):
         super().__init__(scope, id, **kwargs)
 
         network = infra.Network(self, 'infra')
-        s3_bucket = streaming_data.InputStore(self, 'input_store', network_vpc=network.vpc)
+
+        pipeline = streaming_data.ProcessingPipeline(self, 'processing_pipeline', network_vpc=network.vpc)
+        streaming_data.InputStore(self, 'input_store', network_vpc=network.vpc, msk_cluster_arn=pipeline.msk_cluster_arn)
