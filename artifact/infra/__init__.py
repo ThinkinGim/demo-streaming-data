@@ -15,12 +15,17 @@ class Network():
                 ec2.SubnetConfiguration(
                     name="isolated",
                     subnet_type=ec2.SubnetType.ISOLATED,
-                    cidr_mask=18
+                    cidr_mask=20
+                ),
+                ec2.SubnetConfiguration(
+                    name="private",
+                    subnet_type=ec2.SubnetType.PRIVATE,
+                    cidr_mask=20
                 ),
                 ec2.SubnetConfiguration(
                     name="public",
                     subnet_type=ec2.SubnetType.PUBLIC,
-                    cidr_mask=18
+                    cidr_mask=20
                 )
             ]
         )

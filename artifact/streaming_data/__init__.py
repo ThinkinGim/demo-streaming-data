@@ -26,6 +26,10 @@ class InputStore():
         input_handler_role.add_managed_policy(
             aws_iam.ManagedPolicy.from_aws_managed_policy_name('service-role/AWSLambdaBasicExecutionRole')
         )
+        input_handler_role.add_to_policy(aws_iam.PolicyStatement(
+            actions=["kafka-cluster:*","kafka:*"],
+            resources=[msk_cluster_arn]
+        ))
 
         input_handler = aws_lambda.Function(scope, 'input_handler',
             function_name='input_handler',
@@ -35,6 +39,7 @@ class InputStore():
             timeout=core.Duration.seconds(300),
             role=input_handler_role,
             vpc=network_vpc,
+            vpc_subnets=aws_ec2.SubnetSelection(subnet_type=aws_ec2.SubnetType.PRIVATE),
             environment={
                 'input_bucket_name': input_store.bucket_name,
                 'msk_cluster_arn': msk_cluster_arn
